@@ -1,6 +1,5 @@
 ---
 - hosts: localhost
-  gather_facts: false
   collections:
     - netapp.ontap
   vars:
@@ -21,3 +20,53 @@
     loop:
       - aggr1
       - aggr2
+  - name: Create SVM
+    na_ontap_svm:
+      state: present
+      name: ansible_vserver
+      root_volume: ansible_vserver_root
+      root_volume_aggregate: aggr1
+      root_volume_security_style: unix
+      <<: *input
+  - name: Create interface
+    na_ontap_interface:
+      state: present
+      interface_name: "ansible_vserver_mgmt_data_1"
+      home_port: e0d
+      home_node: cluster1-01
+      role: data
+      protocols: nfs
+      admin_status: up
+      failover_policy: local-only
+      firewall_policy: mgmt
+      is_auto_revert: true
+      address: 192.168.0.121
+      netmask: 255.255.255.0
+      vserver: ansible_vserver
+      <<: *input
+  - name: change nfs status
+    na_ontap_nfs:
+      state: present
+      service_state: started
+      vserver: ansible_vserver
+      nfsv3: enabled
+      nfsv4: disabled
+      nfsv41: disabled
+      tcp: enabled
+      udp: enabled
+      vstorage_state: disabled
+      <<: *input
+  - name: Setup default rules
+    na_ontap_export_policy_rule:
+      state: present
+      policy_name: default
+      vserver: ansible_vserver
+      client_match: 0.0.0.0/0
+      ro_rule: any
+      rw_rule: none
+      super_user_security: none
+      <<: *input
+  - name: Add SSHPASS
+    package:
+      name: sshpass
+      state: present
