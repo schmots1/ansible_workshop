@@ -1,5 +1,6 @@
 ---
 - hosts: localhost
+  become: yes
   collections:
     - netapp.ontap
   vars:
@@ -70,3 +71,9 @@
     package:
       name: sshpass
       state: present
+  - name: Copy Ansible config file
+    copy:
+      src: .ansible.cfg
+      dest: /home/ansible/.ansible.cfg
+      owner: ansible
+      group: ansible
