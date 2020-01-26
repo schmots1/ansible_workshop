@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - netapp.ontap
+  vars:
+    input: &input
+      hostname: 192.168.0.101
+      username: admin
+      password: Netapp1!
+      https: true
+      validate_certs: false
+  tasks:
+  - name: Create Aggregates
+    na_ontap_aggregate:
+      state: present
+      raid_size: 6
+      disk_count: 6
+      name: "{{ item }}"
+      <<: *input
+    loop:
+      - aggr1
+      - aggr2
