@@ -1,9 +1,9 @@
 ---
 - hosts: localhost
-  become: yes
   collections:
     - netapp.ontap
   vars:
+    ansible_become_password: Netapp1!
     input: &input
       hostname: 192.168.0.101
       username: admin
@@ -71,6 +71,7 @@
     package:
       name: sshpass
       state: present
+    become: yes
   - name: Copy Ansible config file
     copy:
       src: .ansible.cfg
