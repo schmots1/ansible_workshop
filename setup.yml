@@ -67,11 +67,13 @@
       rw_rule: none
       super_user_security: none
       <<: *input
-  - name: Add SSHPASS
+  - name: Add SSHPASS local
     package:
       name: sshpass
       state: present
     become: yes
+  - name: Add SSHPASS Tower
+    command: docker exec awx_task dnf install -y sshpass
   - name: Copy Ansible config file
     copy:
       src: .ansible.cfg
