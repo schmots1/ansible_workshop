@@ -1,0 +1,33 @@
+- hosts: localhost
+  name: ONTAP
+  gather_facts: false
+  vars:
+    hostname: "192.168.0.101"
+    volname: ansibleVolume
+    vserver: ansible_vserver
+    aggrname:
+    size: 10
+    aggr: aggr1
+    e_policy: 
+    qos_policy:
+    export_policy:
+    state: present
+  tasks:
+  - name: "{{ tower_job_template_name }}"
+    netapp.ontap.na_ontap_volume:
+      state: "{{ state }}"
+      name: "{{ volname }}"
+      aggregate_name: "{{ aggrname }}"
+      size: "{{ size }}"
+      size_unit: gb
+      policy: "{{ export_policy }}"
+      junction_path: "{{ '' if not export_policy else '/volname' }}"
+      space_guarantee: "none"
+      vserver: "{{ vserver }}"
+      hostname: "{{ hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      https: true
+      validate_certs: false
+      efficiency_policy: "{{ e_policy }}"
+      qos_policy_group: "{{ qos_policy }}"
