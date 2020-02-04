@@ -73,7 +73,7 @@
       state: present
     become: yes
   - name: Add SSHPASS Tower
-    command: docker exec awx_tower dnf install -y sshpass
+    command: docker exec awx_task dnf install -y sshpass
   - name: Copy Ansible config file
     copy:
       src: .ansible.cfg
