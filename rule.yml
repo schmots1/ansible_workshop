@@ -14,7 +14,7 @@
       ro_rule: "{{ ro_rule }}"
       rw_rule: "{{ rw_rule }}"
       super_user_security: "{{ su_rule }}"
-      hostname: 192.168.0.101
+      hostname: "{{ hostname }}"
       username: "{{ netapp_username }}"
       password: "{{ netapp_password }}"
       https: true
