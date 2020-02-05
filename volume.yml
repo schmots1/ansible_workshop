@@ -7,8 +7,6 @@
     vserver: ansible_vserver
     aggrname: aggr1
     size: 10
-    e_policy: 
-    qos_policy:
     export_policy:
     state: present
   tasks:
@@ -28,5 +26,3 @@
       password: "{{ netapp_password }}"
       https: true
       validate_certs: false
-      efficiency_policy: "{{ e_policy }}"
-      qos_policy_group: "{{ qos_policy }}"
