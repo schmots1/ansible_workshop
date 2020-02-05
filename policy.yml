@@ -3,12 +3,11 @@
   gather_facts: false
   vars:
     state: present
-    export_policy: "{{ volname }}"
   tasks:
   - name: Create Policy
     na_ontap_export_policy:
       state: "{{ state }}"
-      name: "{{ export_policy }}"
+      name: "{{ volname }}"
       vserver: "{{ vserver }}"
       hostname: "{{ hostname }}"
       username: "{{ netapp_username }}"
