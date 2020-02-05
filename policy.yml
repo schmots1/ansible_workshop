@@ -11,7 +11,7 @@
       name: "{{ export_policy }}"
       vserver: "{{ vserver }}"
       hostname: "{{ hostname }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
       https: true
       validate_certs: false
