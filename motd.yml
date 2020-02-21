@@ -1,0 +1,19 @@
+---
+- name: Set the Message of the Day
+  hosts: ontap
+  collections:
+    - netapp.ontap
+  gather_facts: false
+  tasks:
+  - name: Verifying the MOTD
+    na_ontap_motd:
+      state: present
+      motd_message: Set by Ansible
+      vserver: "{{ shortname }}"
+      hostname: "{{ inventory_hostname }}"
+      username: admin
+      password: Netapp1!
+      https: true
+      validate_certs: false
+    connection: local
+

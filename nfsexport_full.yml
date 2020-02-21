@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  collections:
+    - netapp.ontap
+  gather_facts: false
+  name: Setup NFS Export
+  tasks:
+  - name: Create Policy
+    na_ontap_export_policy:
+      state: present
+      name: ansible_volume_policy
+      vserver: ansible_vserver
+      hostname: 192.168.0.101
+      username: admin
+      password: Netapp1!
+      https: true
+      validate_certs: false
+  - name: Setup rules
+    na_ontap_export_policy_rule:
+      state: present
+      policy_name: ansible_volume_policy
+      client_match: 192.168.0.0/24
+      ro_rule: sys
+      rw_rule: sys
+      super_user_security: sys
+      vserver: ansible_vserver
+      hostname: 192.168.0.20
+      username: admin
+      password: Netapp1!
+      https: true
+      validate_certs: false
+  - name: Create volume
+    na_ontap_volume:
+      state: present
+      name: ansible_volume
+      aggregate_name: aggr1
+      size: 10
+      size_unit: gb
+      policy: ansible_volume_policy 
+      junction_path: /ansible_volume
+      space_guarantee: "none"
+      vserver: ansible_vserver
+      hostname: 192.168.0.101
+      username: admin
+      password: Netapp1!
+      https: true
+      validate_certs: false
+      volume_security_style: unix
+
