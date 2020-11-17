@@ -9,7 +9,7 @@
       state: "{{ state }}"
       policy_name: "{{ volname }}"
       vserver: "{{ vserver }}"
-      client_match: "{{ client_match }}"
+      client_match: "{{ clientmatch }}"
       ro_rule: "{{ ro_rule }}"
       rw_rule: "{{ rw_rule }}"
       super_user_security: "{{ su_rule }}"
