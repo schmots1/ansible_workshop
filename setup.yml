@@ -72,8 +72,12 @@
       name: sshpass
       state: present
     become: yes
-  - name: Add SSHPASS Tower
-    command: docker exec awx_task dnf install -y sshpass
+  - name: Start AWX
+    command: "{{ cmd }}"
+    vars:
+      cmd:
+      - docker run --rm --name kind_deploy -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/root/.kube/ -it schmots1/kind_awx fix
+      - docker run --rm --name kind_deploy -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/root/.kube/ -it schmots1/kind_awx fix
   - name: Copy Ansible config file
     copy:
       src: .ansible.cfg
