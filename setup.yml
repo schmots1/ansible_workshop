@@ -11,6 +11,8 @@
       https: true
       validate_certs: false
   tasks:
+  - name: Prep AWX
+    command: docker run --rm --name kind_deploy -v /var/run/docker.sock:/var/run/docker.sock -t --entrypoint docker schmots1/kind_awx start kind-control-plane
   - name: Create Aggregates
     na_ontap_aggregate:
       state: present
@@ -44,6 +46,7 @@
       address: 192.168.0.121
       netmask: 255.255.255.0
       vserver: ansible_vserver
+      use_rest: Never
       <<: *input
   - name: change nfs status
     na_ontap_nfs:
@@ -73,9 +76,7 @@
       state: present
     become: yes
   - name: Start AWX
-    command: "{{ cmd }}"
-    vars:
-      cmd: docker run --rm --name kind_deploy -v /var/run/docker.sock:/var/run/docker.sock -v /home/ansible/kind_awx/:/root/.kube/ -t schmots1/kind_awx fix
+    command: docker run --rm --name kind_deploy -v /var/run/docker.sock:/var/run/docker.sock -v /home/ansible:/root/.kube/ -t schmots1/kind_awx fix
   - name: Copy Ansible config file
     copy:
       src: .ansible.cfg
